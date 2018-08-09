@@ -2,96 +2,118 @@
 
 // Maze builder functions
 
-std::vector<std::vector<Cell>> 
-boardBuilder(std::vector<std::vector<Cell>> maze,
-int mazeWidth, int mazeHeight)
+void MazeGenerator::boardBuilder(std::vector<std::vector<Cell>> &maze,
+int* mazeWidth, int* mazeHeight)
 {    
-	for(int i = 0;i < mazeWidth; ++i)
+	for(int i = 0;i < *mazeWidth; ++i)
 	{
 		std::vector<Cell>temp;
-		for(int j = 0; j < mazeHeight; ++j)
+		for(int j = 0; j < *mazeHeight; ++j)
 		{
 			Cell condition;
 			temp.push_back(condition);
 		}
 		maze.push_back(temp);
 	}
-	return maze;
+}
+
+void MazeGenerator::mazeBuilder(std::vector<std::vector<Cell>> &maze,
+int* mazeWidth, int* mazeHeight,Coordinate* position)
+{
+	position->xPos = rand() % (*mazeWidth-1) + 0;
+	position->yPos = rand() % (*mazeHeight-1) + 0;	
+	
+	int answer = MazeGenerator::decideDirection(maze, &mazeWidth, &mazeHeight, position);
 }
 
 // decide which way to walk to or go into hunting mode
 
-int decideDirection(std::vector<std::vector<Cell>> maze, 
-Coordinate position,,int mazeWidth, int mazeHeight)
+int MazeGenerator::decideDirection(std::vector<std::vector<Cell>> &maze, 
+int* mazeWidth, int* mazeHeight,Coordinate* position)
 {
-	std::vector<directions>availableMoves[] = {'n','s','w','e'}
+	std::vector<int>availableMoves;
 	
 	// check north
-	
-	if(position.yPos == 0) // At the top of the screen
-	{availableMoves.earase(0)} // remove the north option
-	
-	else if(maze[position.xPos][position.yPos + 1].discovered == true)
-	{availableMoves.earase(0)} // remove the north option
+	if(!((position->yPos == 0)||(maze[position->xPos][position->yPos + 1].discovered == true)))
+	{availableMoves.push_back(1);}
 
 	// check south	
-	
-	if(position.yPos == mazeHeight) // at the bottom of the board
-	{availableMoves.earase(1)} // remove the south option	
-	
-	else if(maze[position.xPos][position.yPos - 1].discovered == true)
-	{availableMoves.earase(1)} // remove the south option
+	if(!((position->yPos == *mazeHeight)||(maze[position->xPos][position->yPos - 1].discovered == true)))
+	{availableMoves.push_back(2);}
 
 	// check west
-	
-	if(position.xPos == 0) // At the left side of the screen
-	{availableMoves.earase(2)} // remove the west option
-	
-	else if(maze[position.xPos-1][position.yPos].discovered == true)	
-	{availableMoves.earase(2)} // remove the west option
+	if(!((position->xPos == 0)||(maze[position->xPos-1][position->yPos].discovered == true)))	
+	{availableMoves.push_back(3);}
 
 	// check east
-
-	if(position.xPos == mazeWidth) // at the far right of the board
-	{availableMoves.earase(3)} // remove the east option
-	
-	else if(maze[position.xPos + 1][position.yPos].discovered == true)	
-	{availableMoves.earase(3)} // remove the east option
+	if(!((position->xPos == *mazeWidth)||(maze[position->xPos + 1][position->yPos].discovered == true)))	
+	{availableMoves.push_back(4);}
 
 	// check if the vector is empty
 	
+	if(availableMoves.size() == 0)
+	{
+		return 5;
+	}
 	// if not empty select a direction from the remainders on the list
-	
+	else
+	{
+		return availableMoves[rand() % (availableMoves.size()-1) + 0];
+	}
 }
 
+// Hunt Mode
+void MazeGenerator::huntMode(std::vector<std::vector<Cell>> &maze,
+int* mazeWidth, int* mazeHeight, Coordinate* position)
+{
+	
+	for(int j = 0; j < *mazeHeight; ++j)
+	{
+		for(int i = 0;i < *mazeWidth; ++i)
+			{
+				if(maze[i][j].discovered == true)
+				position->xPos = i;
+				position->yPos = j;
+				{break;}
+			}
+	}
+}
+
+/*	
 // move the location and mark the connecting locations
 
-std::vector<std::vector<Cell>>
-moveNorth(std::vector<std::vector<Cell>> maze, Coordinate position)
+// Move north
+void MazeGenerator::moveNorth(std::vector<std::vector<Cell>> maze, Coordinate position)
 {
+	// move one space north
+	position.xPos
+	position.yPos
 	
-}
-	
-std::vector<std::vector<Cell>>
-moveSouth(std::vector<std::vector<Cell>> maze, Coordinate position)
-{
-	
-}
-	
-std::vector<std::vector<Cell>>
-moveWest(std::vector<std::vector<Cell>> maze, Coordinate position)
-{
-	
-}
-	
-std::vector<std::vector<Cell>>
-moveEast(std::vector<std::vector<Cell>> maze, Coordinate position)
-{
-	
+	// birdge the top of the current piece with the bottom of the new position
+	maze[position.xPos][position.yPos].northConnection = true;
+	maze[position.xPos][position.yPos + 1].southConnection = true;
 }
 
-std::vector<std::vector<Cell>> 
-mazeBuilder(std::vector<std::vector<Cell>>maze,
+
+void MazeGenerator::moveSouth(std::vector<std::vector<Cell>> maze, Coordinate position)
+{
+	position.xPos
+	position.yPos	
+}
+	
+void MazeGenerator::moveWest(std::vector<std::vector<Cell>> maze, Coordinate position)
+{
+	position.xPos
+	position.yPos
+}
+	
+void MazeGenerator::moveEast(std::vector<std::vector<Cell>> maze, Coordinate position)
+{
+	position.xPos
+	position.yPos	
+}
+
+void MazeGenerator::mazeBuilder(std::vector<std::vector<Cell>>maze,
 int mazeWidth, int mazeHeight, Coordinate position)
 {
 	position.xPos = rand() % mazeWidth + 0;
@@ -99,3 +121,4 @@ int mazeWidth, int mazeHeight, Coordinate position)
 	return maze;
 	
 }
+*/

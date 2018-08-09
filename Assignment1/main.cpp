@@ -1,8 +1,6 @@
-#include "mazeGeneratorSource.h"
+#include "mazeGeneratorSource.cpp"
 
 
 int main()
 {
-	
-	return 0;
 }
