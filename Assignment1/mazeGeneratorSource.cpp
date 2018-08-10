@@ -22,8 +22,6 @@ int* mazeWidth, int* mazeHeight,Coordinate* position)
 {
 	position->xPos = rand() % (*mazeWidth-1) + 0;
 	position->yPos = rand() % (*mazeHeight-1) + 0;	
-	
-	int answer = MazeGenerator::decideDirection(maze, &mazeWidth, &mazeHeight, position);
 }
 
 // decide which way to walk to or go into hunting mode
@@ -67,11 +65,21 @@ void MazeGenerator::huntMode(std::vector<std::vector<Cell>> &maze,
 int* mazeWidth, int* mazeHeight, Coordinate* position)
 {
 	
+/* Look for undicovered space and check the surounding nieghbor cells
+	if they are all undiscovered then move on to next cell until it finds an 
+	undiscovered cell with a discovered nieghbor cell
+*/
+	
 	for(int j = 0; j < *mazeHeight; ++j)
 	{
 		for(int i = 0;i < *mazeWidth; ++i)
 			{
-				if(maze[i][j].discovered == true)
+				if((maze[i][j].discovered == false)&&
+				(maze[i][j+1].discovered == true
+				|| maze[i][j-1].discovered == true
+				|| maze[i+1][j].discovered == true
+				|| maze[i-1][j].discovered == true))
+				
 				position->xPos = i;
 				position->yPos = j;
 				{break;}
