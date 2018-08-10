@@ -3,6 +3,6 @@
 
 int main()
 {
-	
+	MazeGenerator mazeOne;
 	
 }

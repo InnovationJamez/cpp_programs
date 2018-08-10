@@ -29,6 +29,40 @@ private:
 
 public:
 
+/*
+	these functions check to see if the current 
+	spot is on one of the boundaries 
+*/
+
+	bool checkNorthBound(Coordinate* position,int* 
+	mazeWidth,int* mazeHeight);
+
+	bool checkSouthBound(Coordinate* position,int* 
+	mazeWidth,int* mazeHeight);
+	
+	bool checkEastBound(Coordinate* position,int* 
+	mazeWidth,int* mazeHeight);
+	
+	bool checkWestBound(Coordinate* position,int* 
+	mazeWidth,int* mazeHeight);
+
+/*
+	These functions check the surounding spaces 
+	to see is they are taken
+*/
+
+	bool checkNorth(std::vector<std::vector<Cell>> &maze,
+	Coordinate* position);
+	
+	bool checkSouth(std::vector<std::vector<Cell>> &maze, 
+	Coordinate* position);
+	
+	bool checkEast(std::vector<std::vector<Cell>> &maze, 
+	Coordinate* position);
+	
+	bool checkWest(std::vector<std::vector<Cell>> &maze, 
+	Coordinate* position);
+
 	// Maze builder functions
 
 	void boardBuilder(std::vector<std::vector<Cell>> &maze,
