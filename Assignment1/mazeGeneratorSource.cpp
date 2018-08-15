@@ -204,7 +204,7 @@ int* mazeWidth, int* mazeHeight, Coordinate* position)
 			{
 				if(maze[i][j].discovered == false)
 				{
-					if(MazeGenerator::checkNorthBound(position, mazeWidth, mazeHeight))
+					if(!(MazeGenerator::checkNorthBound(position, mazeWidth, mazeHeight)))
 					{
 						if(MazeGenerator::checkNorth(maze, position))
 						{	

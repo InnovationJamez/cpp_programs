@@ -14,7 +14,6 @@ struct Coordinate
 {
 	int xPos;
 	int yPos;
-	
 };
 
 class MazeGenerator{
@@ -98,5 +97,6 @@ public:
 	// conversion to binary file
 	
 	void createBinaryFile();
+	
 	
 };
