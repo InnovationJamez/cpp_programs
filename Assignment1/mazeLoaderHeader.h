@@ -1,8 +1,12 @@
 #include<iostream>
 #include<vector>
-#include<>
+#include<string>
 #include<fstream>
-#include<math>
+#include<math.h>
+
+struct point{
+	double x, y;
+}
 
 class MazeLoader
 {
@@ -10,7 +14,7 @@ private:
 	int mazeWidth;
 	int mazeHeight;
 	int noOfEdges;
-	std::vector<int>binFileVector;
+	std::vector<std::vector<char>>binFileVector;
 
 
 public:
@@ -20,7 +24,7 @@ public:
 	void startSVG();
 	void endSVG();
 	
-	
+	std::string decimaltobinary (int decimal);
 	bool checkIfOpen();
 	int binToInt(std::string);
 	void readLines(std::vector<int>&binFileVector);
@@ -28,5 +32,5 @@ public:
 	void setHeight(int*mazeHeight);
 	void setNumberOfEdges(int*noOfEdges);
 	void setEdges(std::vector<int>&binFileVector);
-	void addEdge(double xOne, yOne, xTwo, yTwo, boardWidth, boardHeight);
+	void addEdge(double boardWidth, boardHeight; point a,b);
 };

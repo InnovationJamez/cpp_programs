@@ -1,44 +1,42 @@
+#include<iostream>
+#include<fstream>
+#include<vector>
+#include<cstring>
+
+using namespace std;
+
 int main()
 {
-	int mazeWidth;
-	int mazeHeight;
-	int noOfEdges;
-	fstream binFile("binFile",ios::binary | ios::in | ios::out | ios::trunc );
+	char input[32];
+	vector<vector<char>>fileVector;
+	strcpy(input,"10001011100010111000101110001011");
+	fstream file("binFile.bin", ios::binary | ios::in | ios::out | ios::trunc);
 	if(!file.is_open())
 	{
-		cout << "file did not open";
-	}else
-	{
-	ofstream svgFile;
-	svgFile.open("generatedMaze.svg");
-	svgFile << "<svg viewBox='0 0 1 1' width='500' height='500' ";
-	svgFile << "xmlns='http://www.w3.org/2000/svg'>\n";
-	svgFile << "<rect width='1' height='1' style='fill: white' />\n";
-	
-	string s;
-	for(std::string line, int i = 1; getline(binFile, s); ++i)
-	{
-	if(i == 1)
-	{ 
+		std::cout << "error while opening";
 	}
-	binFile.close();
-	
-	// first line width
-	
-	// second line height
-	
-	// third line number of edges
-	
-	// rest edges
-	
-	
-	
-	
-	
-	
-	myFile << "</svg>\n";	
-	
-	}
+	else{
+		int length = strlen(input);
+		for(int counter = 0; counter<= length; counter++)
+		{
+		file.put(input[counter]);
+		}
+		file.seekg(0);
 		
-	
+		char ch;
+		vector<char>tempVector;
+		while(file.good())
+		{
+			
+			file.get(ch);
+			tempVector.push_back(ch);
+			if(tempVector.size() == 32)
+			{
+				fileVector.push_back(tempVector);
+				tempVector.clear();			
+			}
+		}	
+		file.close();
+	}
+	return 0;
 }

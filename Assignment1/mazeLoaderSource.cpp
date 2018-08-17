@@ -1,19 +1,19 @@
 #include"mazeLoaderHeader.h"
 
-void loadBin()
+void MazeLoader::loadBin()
 {
-	fstream binFile("binFile.bin",ios::binary | ios::in | ios::out | ios::trunc )
+	fstream binFile("binFile.bin",ios::binary|ios::in|ios::out|ios::trunc)
 }
 
-void startSVG()
+void MazeLoader::startSVG()
 {
 	ofstream svgFile("generatedMaze.svg");
 }
 
-bool checkIfOpen()
+bool MazeLoader::checkIfOpen()
 {
 	bool tempBool;
-	if(!file.is_open())
+	if(!binFile.is_open())
 	{
 		tempBool == false;
 	}else
@@ -23,24 +23,50 @@ bool checkIfOpen()
 	return tempBool;
 }
 
-int binToInt(std::binString)
+int MazeLoader::binToInt(std::vector<char>binVector)
 {
 	int tempInt = 0;
-	for(int i = 0; i < binString.size();++i)
+	for(int i = 0; i < binVector.size();++i)
 	{
 		tempInt += pow(2,i);
 	}
 	return tempInt;
 }
 
-void startSVG()
+string decimaltobinary (int decimal){
+	string binary;
+	int rem = decimal%2;
+	while(rem!==0){
+		if(decimal%2==0){
+			binary == "0" + binary;
+		}
+		
+		if(decimal%2==1){
+			binary == "1" + binary;
+		}
+		decimal = decimal/2
+	}
+	
+	while(decimal.length()<=32){
+		decimal = "0" + decimal;
+	}
+	
+	if(decimal.length()>32){
+		std::cout << "Error! Binary value must have less than 32 characters << std::endl;
+		break;
+	}
+}
+
+
+
+void MazeLoader::startSVG()
 {
 	svgFile << "<svg viewBox='0 0 1 1' width='500' height='500' ";
 	svgFile << "xmlns='http://www.w3.org/2000/svg'>\n";
 	svgFile << "<rect width='1' height='1' style='fill: white' />\n";
 }
 
-void addEdge(double xOne, yOne, xTwo, yTwo, boardWidth, boardHeight)
+void MazeLoader::addEdge(double boardWidth, boardHeight; point a,b)
 {
 	if(yOne == yTwo)
 	{
@@ -71,25 +97,38 @@ void addEdge(double xOne, yOne, xTwo, yTwo, boardWidth, boardHeight)
 	}
 }
 
-void endSVG()
+void MazeLoader::endSVG()
 {
 	myFile << "</svg>\n";
 	myFile.close();
 }
 
-void readLines(std::vector<int>&binFileVector)
+void MazeLoader::readLines(std::vector<int>&binFileVector)
 {
-	binFile.seekg(0);
-	for()
-	{
-		file.read((char*)&)
-	}
-	
-	
+	for(int counter = 0; counter<= length; counter++)
+		{
+		binFile.put(input[counter]);
+		}
+		binFile.seekg(0);
+		
+		char ch;
+		vector<char>tempVector;
+		while(binFile.good())
+		{
+			binFile.get(ch);
+			tempVector.push_back(ch);
+			if(tempVector.size() == 32)
+			{
+				fileVector.push_back(tempVector);
+				tempVector.clear();			
+			}
+		}	
+		binFile.close();
 }
 
 int main()
 {
+	MazeLoader mazeOne;
 	
 	
 }
