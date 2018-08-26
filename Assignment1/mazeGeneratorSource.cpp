@@ -2,6 +2,15 @@
 
 // Maze builder functions
 
+void MazeGenerator::takeVallues(int* mazeWidth,int* mazeHeight)
+{
+	int width, height;
+	std::cout << "Enter Maze width then height and hit enter" << std::endl;
+	std::cin >> width >>height;
+	std::cout << "\nYou entered a height: "<<height<<" and width: "<<width<<std::endl;
+	
+}
+
 void MazeGenerator::boardBuilder(std::vector<std::vector<Cell>> &maze,
 int* mazeWidth, int* mazeHeight)
 {    
@@ -149,7 +158,7 @@ int* mazeWidth, int* mazeHeight,Coordinate* position)
 	if it is empty then that direction is added to the list of 
 	available moves that will be selected from by the randomizer 
 	*/
-	
+/*
 	std::vector<int>availableMoves;
 
 	if(!(MazeGenerator::checkNorthBound(position, mazeWidth, mazeHeight)))
@@ -196,6 +205,7 @@ int* mazeWidth, int* mazeHeight, Coordinate* position)
 	if they are all undiscovered then move on to next cell until it finds an 
 	undiscovered cell with a discovered nieghbor cell
 */
+/*
 	std::vector<int>availableMoves;
 	
 	for(int j = 0; j < *mazeHeight; ++j)
@@ -255,7 +265,7 @@ int* mazeWidth, int* mazeHeight, Coordinate* position)
 /*
 	As the piece moves the place it used to be will be connected to the place it is moving to
 */
-
+/*
 void MazeGenerator::moveNorth(std::vector<std::vector<Cell>> &maze, Coordinate* position)
 {
 	// birdge the top of the current piece with the bottom of the new position
@@ -300,7 +310,7 @@ void MazeGenerator::moveEast(std::vector<std::vector<Cell>> &maze,Coordinate* po
 /* 
 	this is where the maze will be built
 */
-
+/*
 void MazeGenerator::mazeBuilder(std::vector<std::vector<Cell>> &maze,
 int* mazeWidth, int* mazeHeight,Coordinate* position)
 {
@@ -332,3 +342,4 @@ int* mazeWidth, int* mazeHeight,Coordinate* position)
 		std::cout << "there has been an error" << std::endl;
 	}
 }
+*/

@@ -1,0 +1,15 @@
+<svg viewBox='0 0 1 1' width='500' height='500' xmlns='http://www.w3.org/2000/svg'>
+<rect width='1' height='1' style='fill: white' />
+<line stroke='black' stroke-width='0.111111' 
+x1='00' y1='0.0555556' x2='1' y2='0.0555556'/>
+<line stroke='black' stroke-width='0.111111' 
+x1='00.944444' y1='0' x2='0.944444' y2='1'/>
+<line stroke='black' stroke-width='0.111111' 
+x1='01' y1='0.944444' x2='0' y2='0.944444'/>
+<line stroke='black' stroke-width='0.111111' 
+x1='00.0555556' y1='1' x2='0.0555556' y2='0'/>
+<line stroke='black' stroke-width='0.111111' 
+ x1='0.25375' y1='0.25375' x2='0.25375' y2='0.005'/>
+<line stroke='black' stroke-width='0.111111' 
+ x1='0.5025' y1='0.25375' x2='0.25375' y2='0.25375'/>
+</svg>

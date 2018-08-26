@@ -17,21 +17,26 @@ struct Coordinate
 };
 
 class MazeGenerator{
+
 private:
 
 	// Variables
 
 	Coordinate position;
-	const int mazeWidth = 4;
-	const int mazeHeight = 4;
+	
+	int mazeWidth;
+	int mazeHeight;
 	std::vector<std::vector<Cell>>maze;
 
+	
 public:
 
 /*
 	these functions check to see if the current 
 	spot is on one of the boundaries 
 */
+
+	void takeVallues(int* mazeWidth,int* mazeHeight);
 
 	bool checkNorthBound(Coordinate* position,int* 
 	mazeWidth,int* mazeHeight);
@@ -98,5 +103,5 @@ public:
 	
 	void createBinaryFile();
 	
-	
+	// Constructor
 };

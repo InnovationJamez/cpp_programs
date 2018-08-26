@@ -3,6 +3,10 @@
 
 using namespace std;
 
+struct point {
+	double x, y;
+};
+
 int main()
 {
 	ofstream myFile;
@@ -18,41 +22,42 @@ int main()
 	myFile << "<line stroke='black' stroke-width='0.01' x1='0' y1='0' x2='0' y2='1'/>\n";
 	myFile << "<line stroke='black' stroke-width='0.01' x1='1' y1='0' x2='1' y2='1'/>\n";
 	
-	double boardWidth = 4;
-	double boardHeight = 4;
-	double wallHeight = 1/boardHeight;
-	double wallWidth = 1/boardWidth;
+	double wallWidth = 1 / this->mazeWidth;
+	double wallHeight = 1 / this->mazeHeight;
 	
-	double xOne = 2;
-	double yOne = 2;
+	point a;
+	point b;
+	a.x = 1;
+	a.y = 1;
+	b.x = 2;
+	b.y = 1;
 	
-	double xTwo = 3;
-	double yTwo = 2;
 	
-	if(yOne == yTwo)
+	if (a.x == b.x)
 	{
 		myFile << "<line stroke='black' stroke-width='0.01' x1='";
-		myFile << wallWidth*xOne;
+		myFile << wallWidth * a.x;
 		myFile << "' y1='";
-		myFile << wallHeight*yOne;
+		myFile << wallHeight * a.y;
 		myFile << "' x2='";
-		myFile << wallWidth*xOne;
+		myFile << wallWidth * a.x;
 		myFile << "' y2='";
-		myFile	<< wallHeight*yOne-wallHeight;
+		myFile << wallHeight * a.y - wallHeight;
 		myFile << "'/>\n";
 	}
 	else
 	{
 		myFile << "<line stroke='black' stroke-width='0.01' x1='";
-		myFile << wallWidth*xOne;
+		myFile << wallWidth * a.x;
 		myFile << "' y1='";
-		myFile << wallHeight*yOne;
+		myFile << wallHeight * a.y;
 		myFile << "' x2='";
-		myFile << wallWidth*xOne-wallWidth;
+		myFile << wallWidth * a.x - wallWidth;
 		myFile << "' y2='";
-		myFile	<< wallHeight*yOne;
-		myFile << "'/>\n";		
+		myFile << wallHeight * a.y;
+		myFile << "'/>\n";
 	}
+
 	myFile << "</svg>\n";
 	return 0;
 }
