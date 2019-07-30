@@ -1,0 +1,12 @@
+james
+21
+red
+randy
+23
+green
+celeste
+18
+green
+stephen
+25
+yellow

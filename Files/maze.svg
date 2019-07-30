@@ -1,6 +1,0 @@
-<svg viewBox='0 0 1 1' width='500' height='500' xmlns='http://www.w3.org/2000/svg'>
-<rect width='1' height='1' style='fill: black' />
-<line stroke='white' stroke-width='0.005' x1='0' y1='0' x2='0.5' y2='0'/>
-<line stroke= 'white' stroke-width='0.005' x1='0.5' y1='0' x2='0.5' y2='0.5'/>
-<line stroke='white' stroke-width='0.005' x1='0.5' y1='0.5' x2='0' y2='0.5'/>
-</svg>

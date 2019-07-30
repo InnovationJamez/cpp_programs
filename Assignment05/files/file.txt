@@ -1,0 +1,9 @@
+LDUR 	x4, [x3, #20]
+STUR	x4, [x3, #20]
+ADD	x3, x4, x5
+SUB 	x3, x6, x1
+SUBI	x12, x20, #21
+ADDI	x10, x9, x13
+B 	-4
+CBZ	1
+
