@@ -1,0 +1,11 @@
+ADDI x5, XZR, #45
+ADD x10, x5, x4
+SUBI x13, x10, #20
+CBZ x0, 3
+SUB x12, x13, x5
+AND x4, x5, x13
+ORR x4, x5, x13
+STUR x4, [x13, #0]
+LDUR x22, [x13, #0]
+STUR x5, [x0, #12]
+LDUR x31, [x0, #12]

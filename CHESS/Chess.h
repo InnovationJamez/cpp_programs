@@ -20,6 +20,7 @@ protected:
 	point location;
 	char pChar;
 	std::vector<point> locations;
+	bool side; //true : player 1  false : computer/player 2
 public:
 	// find valid move locations pure virtual 
 	void virtual findLoc(std::vector<Chess_Piece*>* board, int w) = 0;

@@ -1,0 +1,24 @@
+<svg viewBox='0 0 1 1' width='500' height='500' xmlns='http://www.w3.org/2000/svg'>
+<rect width='1' height='1' style='fill: black' />
+<line stroke='white' stroke-width='0.125' x1='0.125' y1='0.125' x2='0.125' y2='0.375'/>
+<line stroke='white' stroke-width='0.125' x1='0.125' y1='0.375' x2='0.125' y2='0.625'/>
+<line stroke='white' stroke-width='0.125' x1='0.125' y1='0.625' x2='0.125' y2='0.875'/>
+<line stroke='white' stroke-width='0.125' x1='0.375' y1='0.375' x2='0.375' y2='0.625'/>
+<line stroke='white' stroke-width='0.125' x1='0.625' y1='0.125' x2='0.625' y2='0.375'/>
+<line stroke='white' stroke-width='0.125' x1='0.625' y1='0.625' x2='0.625' y2='0.875'/>
+<line stroke='white' stroke-width='0.125' x1='0.875' y1='0.125' x2='0.875' y2='0.375'/>
+<line stroke='white' stroke-width='0.125' x1='0.875' y1='0.375' x2='0.875' y2='0.625'/>
+<line stroke='white' stroke-width='0.125' x1='0.875' y1='0.625' x2='0.875' y2='0.875'/>
+<line stroke='white' stroke-width='0.125' x1='0.375' y1='0.125' x2='0.625' y2='0.125'/>
+<line stroke='white' stroke-width='0.125' x1='0.375' y1='0.375' x2='0.625' y2='0.375'/>
+<line stroke='white' stroke-width='0.125' x1='0.375' y1='0.625' x2='0.625' y2='0.625'/>
+<line stroke='white' stroke-width='0.125' x1='0.125' y1='0.875' x2='0.375' y2='0.875'/>
+<line stroke='white' stroke-width='0.125' x1='0.375' y1='0.875' x2='0.625' y2='0.875'/>
+<line stroke='white' stroke-width='0.125' x1='0.625' y1='0.875' x2='0.875' y2='0.875'/>
+<line stroke='red' stroke-width='0.125' x1='0.125' y1='0.125' x2='0.125' y2='0.375'/>
+<line stroke='red' stroke-width='0.125' x1='0.125' y1='0.375' x2='0.125' y2='0.625'/>
+<line stroke='red' stroke-width='0.125' x1='0.125' y1='0.625' x2='0.125' y2='0.875'/>
+<line stroke='red' stroke-width='0.125' x1='0.125' y1='0.875' x2='0.375' y2='0.875'/>
+<line stroke='red' stroke-width='0.125' x1='0.375' y1='0.875' x2='0.625' y2='0.875'/>
+<line stroke='red' stroke-width='0.125' x1='0.625' y1='0.875' x2='0.875' y2='0.875'/>
+</svg>

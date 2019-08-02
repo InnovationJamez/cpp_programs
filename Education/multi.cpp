@@ -3,14 +3,18 @@
 #include <thread>
 
 void doWork(){
-	std::cout << "Working" << std::endl;
+	for(int i = 0; i < 10; i++){
+		std::cout << "Working" << std::endl;		
+	}
 }
 
 
 int main(){
 
 	std::thread worker(doWork);
-	//worker.join();
+	worker.join(); 
+	std::cout << "Work Done" << std::endl;
+	std::cin.get();
 
 	return 0;
 }

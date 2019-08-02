@@ -6,7 +6,7 @@
 
 // if the user inputs a valid location move to that location
 void Chess_Piece::move(){
-
+	
 }
 
 // return the char that represents piece

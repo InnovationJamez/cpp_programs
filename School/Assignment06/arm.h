@@ -18,7 +18,7 @@
 
 class Arm{
 private:
-	std::string filePath = "files/file.txt";
+	std::string filePath = "files/test.txt";
 	std::vector<std::string> instructionMem;
 	int reg[32];
 	int mem[32];	
@@ -38,8 +38,11 @@ public:
 	// display memory values
 	void dispMemory();
 
-	// main loop where everything is executed
+	// implement hardware sequentially 
 	void mainLoop();
+
+	// main loop where pipelining happens
+	void pipeLineLoop();
 
 	// Instruction fetch
 	std::string instructionFetch(int pc);
@@ -48,15 +51,25 @@ public:
 	std::vector<int> instructionDecode(std::string str);
 
 	// Execute/ address calculation
-	void executeInst();
+	std::vector<int> executeInst(std::vector<int> argList);
 
 	//Memory access read and write from memory
-	int memAccess();
+	std::vector<int> memAccess(std::vector<int> argList);
 
 	//Write back
-	void writeBack(int regNum, int value);
+	int writeBack(std::vector<int> argList);
 
 	// find if a substring exists within a larger string
 	bool wordFinder(std::string str, std::string word);
+
+	// functions for reading and writting from reg/mem
+
+	int regRead(int index);
+
+	void regWrite(int value, int index);
+
+	int memRead(int index);
+
+	void memWrite(int value, int index);
 };
 

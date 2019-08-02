@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/sl5/S3734925/HDrive/AssignmentTwo/SourceFiles/builder.cpp
+boost/program_options.hpp
+/home/sl5/S3734925/HDrive/AssignmentTwo/SourceFiles/boost/program_options.hpp
+iostream
+-
+string
+-
+
