@@ -18,13 +18,13 @@
 
 class Arm{
 private:
-	std::string filePath = "files/test.txt";
+	std::string filePath = "files/ExampleOne.txt";
 	std::vector<std::string> instructionMem;
 	int reg[32];
 	int mem[32];	
 public:
 	// the constructor
-	Arm();
+	Arm(std::string name);
 
 	// opens file and puts contents into a vector of strings
 	void openFile();
@@ -57,7 +57,7 @@ public:
 	std::vector<int> memAccess(std::vector<int> argList);
 
 	//Write back
-	int writeBack(std::vector<int> argList);
+	void writeBack(std::vector<int> argList);
 
 	// find if a substring exists within a larger string
 	bool wordFinder(std::string str, std::string word);

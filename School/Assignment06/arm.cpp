@@ -1,7 +1,9 @@
 #include "arm.h"
 
 // the constructor
-Arm::Arm(){
+Arm::Arm(std::string name){
+
+	filePath = "files/" + name + ".txt";
 	
 	//initialize all the register vallues to zero
 	for(int i = 0; i < 32; i++){
@@ -73,57 +75,6 @@ void Arm::dispMemory(){
 }
 
 // main loop where everything is executed
-// this function exists so I can test the parts
-// before i implement pipelining
-void Arm::mainLoop(){
-
-	std::string instruction;
-	std::vector<int> aluInput;
-	std::vector<int> memInput;
-	std::vector<int> writeInput;
-
-	int inLen = instructionMem.size();
-
-	for(int pc = 0; pc < inLen; pc++){
-		// instruction fetch
-		instruction = instructionFetch(pc);	
-		std::cout << instruction << std::endl;
-
-		// instruction decode
-		if(instruction != ""){
-			aluInput = instructionDecode(instruction);
-		}
-		for(int i = 0; i < aluInput.size(); i++){
-			std::cout << aluInput[i] << " ";
-		}
-		std::cout << std::endl;
-
-		// execute instruction
-		if(aluInput.size() > 0){
-			memInput = executeInst(aluInput);
-		}
-		for(int i = 0; i < memInput.size(); i++){
-			std::cout << memInput[i] << " ";
-		}
-		std::cout << std::endl;
-
-		// memory access
-		if(memInput.size() > 0){
-			writeInput = memAccess(memInput);
-		}
-		for(int i = 0; i < writeInput.size(); i++){
-			std::cout << writeInput[i] << " ";
-		}
-		std::cout << std::endl;
-
-		// write back
-		if(writeInput.size() > 0){
-			pc += writeBack(writeInput);			
-		}
-	}
-
-}
-
 // main loop where pipelining happens
 void Arm::pipeLineLoop(){
 	std::string instruction;
@@ -131,16 +82,50 @@ void Arm::pipeLineLoop(){
 	std::vector<int> memInput;
 	std::vector<int> writeInput;
 
-	int inLen = instructionMem.size();
+	bool loopCond = true;
+	int pc = 0;
 
-	for(int pc = 0; pc < inLen + 5; pc++){
+	while(loopCond){
 		// write back
 		if(writeInput.size() > 0){
-			pc += writeBack(writeInput);			
+			writeBack(writeInput);
+			if(writeInput[0] != CBZ && writeInput[0] != B && writeInput[1] == aluInput[2]){
+				// modify aluInput for rn
+				aluInput.push_back(writeInput[2] && aluInput[0] != LDUR);
+			}
+			if(writeInput[0] != CBZ && writeInput[0] != B && writeInput[1] == aluInput[3]){
+				// modify aluInput for rm
+				aluInput.push_back(writeInput[2] && aluInput[0] != LDUR);
+			}	
+			if(writeInput[0] != CBZ && writeInput[0] != B && writeInput[1] == aluInput[1] && aluInput[0] == STUR){
+				aluInput.push_back(writeInput[2]);
+			}	
+			if(aluInput[0] == CBZ && aluInput[1] == writeInput[1]){
+				aluInput.push_back(memInput[2]);
+			}	
 		}
 		// memory access
 		if(memInput.size() > 0){
 			writeInput = memAccess(memInput);
+
+			// checking for dependancies
+			if(writeInput[0] != CBZ && writeInput[0] != B && writeInput[1] == aluInput[2] && aluInput[0] != LDUR){
+				// modify aluInput for rn
+				aluInput.push_back(writeInput[2]);
+			}
+			if(writeInput[0] != CBZ && writeInput[0] != B && writeInput[1] == aluInput[3] && aluInput[0] != LDUR){
+				// modify aluInput for rm
+				aluInput.push_back(writeInput[2]);
+			}
+			if(writeInput[0] != CBZ && writeInput[0] != B && writeInput[1] == aluInput[1] && aluInput[0] == STUR){
+				aluInput.push_back(writeInput[2]);
+			}
+			if(writeInput[0] != CBZ && writeInput[0] != B && memInput[0] == STUR && memInput[1] == (regRead(aluInput[2]) + aluInput[3])){
+				aluInput.push_back(memInput[2]);
+			}
+			if(aluInput[0] == CBZ && aluInput[1] == writeInput[1]){
+				aluInput.push_back(memInput[2]);
+			}
 		}
 		else{
 			writeInput.clear();
@@ -155,6 +140,11 @@ void Arm::pipeLineLoop(){
 		// instruction decode
 		if(instruction != ""){
 			aluInput = instructionDecode(instruction);
+
+			for(int i = 0; i < aluInput.size(); i++){
+				std::cout << aluInput[i] << " ";
+			}
+			std::cout << std::endl;
 		}
 		else{
 			aluInput.clear();
@@ -162,7 +152,26 @@ void Arm::pipeLineLoop(){
 
 		// instruction fetch
 		instruction = instructionFetch(pc);
+		std::cout << instruction << std::endl;
+
+		if(pc > instructionMem.size() && writeInput.size() == 0){
+			loopCond = false;
+		}
+
+		if(memInput.size() > 0 && memInput[0] == 10){
+			pc+=memInput[1];
+		}
+		else if(memInput.size() > 0 && memInput[0] == 9 && regRead(memInput[1]) == 0){
+			pc+=memInput[2];
+		}
+		else{
+			pc++;
+		}
 	}
+
+	std::cout << "clock cycles: " << pc << std::endl;
+	std::cout << "instruction count: " << instructionMem.size() << std::endl;
+	std::cout << "CPI: " << ((double)pc/instructionMem.size()) << std::endl;
 }
 
 // Instruction fetch
@@ -181,16 +190,6 @@ std::vector<int> Arm::instructionDecode(std::string str){
 	std::vector<std::string> sList;
 	std::string temp;
 	bool start = false;
-
-	// if B type instruction 
-	if(wordFinder(str, "B")){
-		// push instruction type
-		regValues.push_back(B);
-		// push inst value
-		regValues.push_back(std::stoi(str.substr(1, str.length() -1 )));
-		// return value
-		return regValues;
-	}
 
 	// if CBZ type instruction
 	if(wordFinder(str, "CBZ")){
@@ -214,6 +213,16 @@ std::vector<int> Arm::instructionDecode(std::string str){
 
 		// push other value
 		regValues.push_back(std::stoi(str.substr(8, str.length()-1)));
+		return regValues;
+	}
+
+	// if B type instruction 
+	if(wordFinder(str, "B") && !(wordFinder(str, "SUB") || wordFinder(str, "SUBI"))){
+		// push instruction type
+		regValues.push_back(B);
+		// push inst value
+		regValues.push_back(std::stoi(str.substr(1, str.length() -1 )));
+		// return value
 		return regValues;
 	}
 
@@ -276,46 +285,86 @@ std::vector<int> Arm::instructionDecode(std::string str){
 // Execute/ address calculation
 std::vector<int> Arm::executeInst(std::vector<int> argList){
 	std::vector<int> nextInst;
+	int valOne, valTwo;
+
+	if(argList.size() > 4){
+		valOne = argList[4];
+	}
+	else if(argList[0] == B){
+		valOne = argList[1];
+	}
+	else if(argList[0] == CBZ){
+		if(argList.size() > 3){
+			valOne = regRead(argList[3]);
+		}
+		else{
+			valOne = regRead(argList[1]);		
+		}
+
+	}
+	else if(argList[0] == STUR){
+		valOne = regRead(argList[1]);
+	}
+	else if(argList[0] == LDUR){
+		valOne = memRead(regRead(argList[2] + argList[3]));
+	}
+	else{
+		valOne = regRead(argList[2]);
+	}
+
+	if(argList.size() > 5){
+		valTwo = argList[5];
+	}
+	else if(argList[0] == SUBI || argList[0] == ADDI){
+		valTwo = argList[3];
+	}
+	else if(argList[0] == LDUR || argList[0] == STUR){
+		valTwo = regRead(argList[2]);
+	}
+	else{
+		valTwo = regRead(argList[3]);
+	}
+	
 	switch(argList[0]){
 		case ADD:
 			nextInst.push_back(ADD);
 			nextInst.push_back(argList[1]);
-			nextInst.push_back(reg[argList[2]] + reg[argList[3]]);
+			nextInst.push_back(valOne + valTwo);
 			break;
 		case ADDI:
 			nextInst.push_back(ADDI);
 			nextInst.push_back(argList[1]);
-			nextInst.push_back(reg[argList[2]] + argList[3]);
+			nextInst.push_back(valOne + valTwo);
 			break;
 		case SUB:
 			nextInst.push_back(SUB);
 			nextInst.push_back(argList[1]);
-			nextInst.push_back(reg[argList[2]] - reg[argList[3]]);
+			nextInst.push_back(valOne - valTwo);
 			break;
 		case SUBI:
 			nextInst.push_back(SUBI);
 			nextInst.push_back(argList[1]);
-			nextInst.push_back(reg[argList[2]] - argList[3]);
+			nextInst.push_back(valOne - valTwo);
 			break;	
 		case ORR:
 			nextInst.push_back(ORR);
 			nextInst.push_back(argList[1]);
-			nextInst.push_back(regRead(argList[2]) | regRead(argList[3]));			
+			nextInst.push_back(valOne | valTwo);			
 			break;
 		case AND:
 			nextInst.push_back(AND);
 			nextInst.push_back(argList[1]);
-			nextInst.push_back(regRead(argList[2]) & regRead(argList[3]));
+			nextInst.push_back(valOne & valTwo);
 			break;
 		case LDUR:
 			nextInst.push_back(LDUR);
-			nextInst.push_back(regRead(argList[2]) + argList[3]);
-			nextInst.push_back(argList[1]);			
+			nextInst.push_back(valOne);
+			nextInst.push_back(argList[1]);		
 			break;
 		case STUR:
 			nextInst.push_back(STUR);
-			nextInst.push_back(regRead(argList[2]) + argList[3]);
-			nextInst.push_back(regRead(argList[1]));
+			nextInst.push_back(valTwo + argList[3]);
+			nextInst.push_back(valOne);
 			break;
 		case B:
 			nextInst.push_back(B);
@@ -323,11 +372,10 @@ std::vector<int> Arm::executeInst(std::vector<int> argList){
 			break;
 		case CBZ:
 			nextInst.push_back(CBZ);
-			nextInst.push_back(argList[1]);
+			nextInst.push_back(valOne);
 			nextInst.push_back(argList[2]);
 			break;
-		default:
-			std::cout << "Error Invalid Instruction" << std::endl; 
+		default: 
 			break;
 	}
 	return nextInst;
@@ -350,20 +398,20 @@ std::vector<int> Arm::memAccess(std::vector<int> argList){
 		case LDUR:
 			nextArg.push_back(LDUR);
 			nextArg.push_back(argList[2]);
-			nextArg.push_back(memRead(argList[1]));
+			nextArg.push_back(argList[1]);
 			break;
 		case STUR:
 			memWrite(argList[1], argList[2]);
+			nextArg = argList;
 			break;
 		default:
-			std::cout << "Error Invalid Instruction" << std::endl;
 			break;
 	}
 	return nextArg;
 }
 
 //Write back
-int Arm::writeBack(std::vector<int> argList){
+void Arm::writeBack(std::vector<int> argList){
 	switch(argList[0]){
 		case ADD:
 			regWrite(argList[1], argList[2]);
@@ -383,24 +431,15 @@ int Arm::writeBack(std::vector<int> argList){
 		case ORR:
 			regWrite(argList[1], argList[2]);
 			break;
+		case STUR:
+			// do nothing
+			break;
 		case LDUR:
 			regWrite(argList[1], argList[2]);
-			break;
-		case B:
-			return argList[1];
-			break;
-		case CBZ:
-			if(argList[1] == 0){
-				return argList[2];
-			}
-			else{
-				return 0;			
-			}
 			break;
 		default:
 			break;
 	}
-	return 0;
 } 
 
 // functions for reading and writting from reg/mem
@@ -448,7 +487,7 @@ bool Arm::wordFinder(std::string str, std::string word){
 	std::string slice;
 
 	for(int i = 0; i < strLen - wordLen; i++){
-		slice = str.substr(i, i + wordLen);
+		slice = str.substr(i, wordLen);
 		if(slice == word){
 			return true;
 		}

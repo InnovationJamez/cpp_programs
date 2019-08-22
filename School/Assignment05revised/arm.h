@@ -6,13 +6,13 @@
 
 class Arm{
 private:
-	std::string filePath = "files/file.txt";
+	std::string filePath;
 	std::vector<std::string> instructionMem;
 	int reg[32];
 	int mem[32];	
 public:
 	// the constructor
-	Arm();
+	Arm(std::string name);
 
 	// opens file and puts contents into a vector of strings
 	void openFile();
@@ -54,13 +54,6 @@ public:
 
 	// instruction decode and instruction fetch
 	std::vector<int> instructionDecode();
-
-	// Execute/ address calculation
-
-	//Memory access
-
-	//Writeback
-
 
 };
 

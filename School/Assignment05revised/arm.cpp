@@ -1,7 +1,10 @@
 #include "arm.h"
 
 // the constructor
-Arm::Arm(){
+Arm::Arm(std::string name){
+
+	filePath = "files/" + name + ".txt";
+	std::cout << filePath << std::endl;
 	
 	//initialize all the register vallues to zero
 	for(int i = 0; i < 32; i++){
@@ -37,7 +40,7 @@ void Arm::openFile(){
 // iterates through the instruction list and calls other functions
 void Arm::mainLoop(){
 	for(int i = 0; i < instructionMem.size(); i++){
-		std::cout <<  "Count: " << i << std::endl;
+		std::cout << instructionMem[i] << std::endl;
 		i += reader(instructionMem[i]);
 	}
 }
@@ -49,13 +52,6 @@ int Arm::reader(std::string str){
 	bool start;
 	std::vector<int> num;
 	std::vector<std::string> sList;
-
-	// if B or CBZ end early
-	if(wordFinder(str, "B")){
-		int num = std::stoi(str.substr(1, str.length() -1 ));
-		std::cout << str << std::endl;
-		return num;
-	}
 
 	start = false;
 	if(wordFinder(str, "CBZ")){
@@ -76,10 +72,26 @@ int Arm::reader(std::string str){
 		std::cout << str << std::endl;
 
 		if(regRead(regVal) == 0){
-			return num;
+			if(num > 0){
+				return num + 1;
+			}
+			else{
+				return num - 1;
+			}
 		}
 		else{
 			return 0;
+		}
+	}
+
+	// if B or CBZ end early
+	if(wordFinder(str, "B") && !(wordFinder(str, "SUB"))){
+		int num = std::stoi(str.substr(1, str.length() -1 ));
+		if(num > 0){
+			return num + 1;
+		}
+		else{
+			return num - 1;
 		}
 	}
 
@@ -97,7 +109,7 @@ int Arm::reader(std::string str){
 			s.push_back(str[i]);
 		}
 	}
-	sList.push_back(s);
+		sList.push_back(s);
 
 	for(int i = 0; i < 3; i++){
 		if(sList[i] == "ZR"){
@@ -106,41 +118,33 @@ int Arm::reader(std::string str){
 		else{
 			num.push_back(std::stoi(sList[i]));
 		}
-	}	
+	}			
 
 	// find instruction trype and then execute
 	if(wordFinder(str, "ADDI")){
-		std::cout << str << std::endl;
 		regWrite(num[0], regRead(num[1]) + num[2]);
 	}
 	else if(wordFinder(str, "ADD")){
-		std::cout << str << std::endl;
 		regWrite(num[0], regRead(num[1]) + regRead(num[2]));
 	}
 	else if(wordFinder(str, "SUBI")){
-		std::cout << str << std::endl;
 		regWrite(num[0], regRead(num[1]) - num[2]);
 	}
 	else if(wordFinder(str, "SUB")){
-		std::cout << str << std::endl;
 		regWrite(num[0], regRead(num[1]) - regRead(num[2]));
 	}
 	else if(wordFinder(str, "ORR")){
-		std::cout << str << std::endl;
 		regWrite(num[0], regRead(num[1])  | regRead(reg[num[2]]));
 	}
 	else if(wordFinder(str, "AND")){
-		std::cout << str << std::endl;
 		regWrite(num[0], regRead(num[1])  & regRead(reg[num[2]]));
 	}
 	else if(wordFinder(str, "LDUR")){
-		std::cout << str << std::endl;
 		regWrite(num[0], memRead(regRead(num[1]) + num[2]));
 	}
 	else if(wordFinder(str, "STUR")){
-		std::cout << str << std::endl;
 		memWrite(regRead(num[1]) + num[2], regRead(num[0]));
-	}	
+	}
 
 	return 0;
 }
@@ -152,7 +156,7 @@ bool Arm::wordFinder(std::string str, std::string word){
 	std::string slice;
 
 	for(int i = 0; i < strLen - wordLen; i++){
-		slice = str.substr(i, i + wordLen);
+		slice = str.substr(i, wordLen);
 		if(slice == word){
 			return true;
 		}
@@ -207,7 +211,6 @@ int Arm::memRead(int index){
 
 // write a value into memory
 void Arm::memWrite(int index, int value){
-	std::cout << index << " " << value << std::endl;
 	if(index < 0 || index > 31){
 		//ignore
 	}
@@ -218,22 +221,22 @@ void Arm::memWrite(int index, int value){
 
 // display register values
 void Arm::dispReg(){
-	std::cout << "########REGISTERS###########" << std::endl;
+	std::cout << "#################################REGISTERS####################################" << std::endl;
 	for(int i = 0; i < 32; i+=4){
-		std::cout << i     << ": " << reg[i] << " | ";
-		std::cout << i + 1 << ": " << reg[i+1] << " | ";
-		std::cout << i + 2 << ": " << reg[i+2] << " | ";
-		std::cout << i + 3 << ": " << reg[i+3] << std::endl;
+		std::cout << (i<10?"0":"")   << i     << ": " << reg[i]   << "\t\t|\t";
+		std::cout << (i+1<10?"0":"") << i + 1 << ": " << reg[i+1] << "\t\t|\t";
+		std::cout << (i+2<10?"0":"") << i + 2 << ": " << reg[i+2] << "\t\t|\t";
+		std::cout << (i+3<10?"0":"") << i + 3 << ": " << reg[i+3] << std::endl;
 	}
 }
 
 // display memory values
 void Arm::dispMemory(){
-	std::cout << "########MEMORY###########" << std::endl;
+	std::cout << "#################################MEMORY#######################################" << std::endl;
 	for(int i = 0; i < 32; i+=4){
-		std::cout << i     << ": " << mem[i] << " | ";
-		std::cout << i + 1 << ": " << mem[i+1] << " | ";
-		std::cout << i + 2 << ": " << mem[i+2] << " | ";
-		std::cout << i + 3 << ": " << mem[i+3] << std::endl;
+		std::cout << (i<10?"0":"")   << i     << ": " << mem[i]   << "\t\t|\t";
+		std::cout << (i+1<10?"0":"") << i + 1 << ": " << mem[i+1] << "\t\t|\t";
+		std::cout << (i+2<10?"0":"") << i + 2 << ": " << mem[i+2] << "\t\t|\t";
+		std::cout << (i+3<10?"0":"") << i + 3 << ": " << mem[i+3] << std::endl;
 	}
 }

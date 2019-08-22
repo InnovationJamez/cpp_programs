@@ -1,13 +1,5 @@
-ADDI x2, XZR, #20
-ADDI x4, XZR, #23
-ADD  x7, x2, x4
-SUB  x10, x7, x4
-SUBI x21, x7, #50
-STUR x2, [x4, #0]
-LDUR x15,[x4, #0]
-AND x3, x2, x4
-ORR  x6, x2, x4
-B 	1
-ADDI x20, XZR, #13
-ADDI x20, XZR, #7
-CBZ x2, -5
+ADDI X1, XZR, #10
+STUR X1, [X0, #0] 
+ADDI x2, XZR, #13
+STUR X2, [X0, #1]
+ADD  X21, XZR, XZR
