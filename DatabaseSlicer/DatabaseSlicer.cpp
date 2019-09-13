@@ -30,10 +30,14 @@ bool loadDatabase(std::string filePath, list* fileVector){
 	std::string temp = "";
 	std::string line;
 	char firstChar;
+	char lastLineLastChar;
 	if(fileObject->is_open()){
 		while(getline((*fileObject), line)){
 			firstChar = line[0];
-			if(firstChar > 47 && firstChar < 58){
+			lastLineLastChar = temp[temp.length() - 1];
+			// when the last char is a '.' and the fist char of the next line is a number then 
+			// this is going from one index to another
+			if(firstChar > 47 && firstChar < 58 && lastLineLastChar == '.'){
 				(*fileVector).push_back(temp);
 				temp="";
 				temp+=line;
