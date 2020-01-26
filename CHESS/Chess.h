@@ -16,6 +16,10 @@ struct point{
 };
 
 class Chess_Piece{
+private:
+	int width = 8;
+	int height = 8;
+	std::vector<Chess_Piece*> board;
 protected:
 	point location;
 	char pChar;

@@ -6,7 +6,10 @@
 
 // if the user inputs a valid location move to that location
 void Chess_Piece::move(){
-	
+	std::cout << "Select Location: " << std::endl;
+	for(int i = 0; i < locations.size(); i++){
+		std::cout << i << " [" << locations[i].xPos << "," << locations[i].yPos << "]" << std::endl;
+	}
 }
 
 // return the char that represents piece
@@ -118,11 +121,6 @@ void King::findLoc(std::vector<Chess_Piece*>* board, int w){
 			locations.push_back(temp[i]);
 		}
 	}
-
-
-	for(int i = 0; i < locations.size(); i++){
-		std::cout << locations[i].xPos << " " << locations[i].yPos << std::endl;
-	}
 }
 
 /*
@@ -164,14 +162,21 @@ void fillBoard(std::vector<Chess_Piece*>* board, int w, int h){
 
 // draw the board
 void drawBoard(std::vector<Chess_Piece*>* board, int w, int h){
+	char list[8] = {'a','b','c','d','e','f','g','h'};
+	std::cout << "-------------------------------------\n";
+	std::cout << "| X | ";
+	for(int i = 0; i < w; i++){
+		std::cout << list[i] << " | ";
+	}
+	std::cout << "\n";
 	for(int j = 0; j < h; j++){
-		std::cout << "---------------------------------\n| ";
+		std::cout << "-------------------------------------\n| " << j << " | ";
 		for(int i = 0; i < w; i++){
 			std::cout << (*board)[j * w + i]->returnChar() << " | ";
 		}
 		std::cout << "\n";		
 	}
-	std::cout << "---------------------------------\n";
+	std::cout << "-------------------------------------\n";
 }
 
 // select piece
@@ -183,6 +188,7 @@ void selectPiece(std::vector<Chess_Piece*>* board, int w, int h){
 	if(x > 0 && x <= w && y > 0 && y <= h){
 		std::cout << "You selected: "<< (*board)[(y - 1) * w + (x - 1)]->returnChar() << std::endl;
 		(*board)[(y - 1) * w + (x - 1)]->findLoc(board, w);
+		(*board)[(y - 1) * w + (x - 1)]->move();
 	}
 }
 
